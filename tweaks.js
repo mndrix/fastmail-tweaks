@@ -27,12 +27,43 @@ function mndrix_kb_preview () {
     });
 }
 
-/* replace the 'x' shortcut with one that also moves down */
+/* add a 't' shortcut that selects and then moves down */
 function mndrix_kb_select_and_down () {
-    var old_x = KeyboardShortcuts.Actions['x'];
     KeyboardShortcuts.Actions.extend({
-        'x' : function (e) {
-            old_x(e);
+        't' : function (e) {
+            KeyboardShortcuts.Actions['x'](e);
+            KeyboardShortcuts.Actions['j'](e);
+        },
+    });
+}
+
+/* make ctrl-enter queue the current message to be read, tag it
+ * and move on to the next one
+ */
+function mndrix_kb_open_tag_move () {
+    KeyboardShortcuts.Actions.extend({
+        'ctrl-enter' : function (e) {
+            KeyboardShortcuts.Actions['x'](e);
+            var link = $E('tr.keyboardSelected td.subject a');
+            var evt = document.createEvent("MouseEvents");
+            evt.initMouseEvent(
+                "click", // type
+                true,    // canBubble
+                true,    // cancelable
+                window,  // view
+                0,       // detail
+                0,       // screenX
+                0,       // screenY
+                0,       // clientX
+                0,       // clientY
+                false,   // ctrlKey
+                false,   // altKey
+                false,   // shiftKey
+                true,    // metaKey  (different key on Windows?)
+                0,       // button
+                null     // relatedTarget
+            );
+            link.dispatchEvent(evt);
             KeyboardShortcuts.Actions['j'](e);
         },
     });
@@ -58,14 +89,11 @@ window.addEvent('domready', function () {
         /* make 'e' shortcut for moving messages to Archive */
         mndrix_kb_archive();
 
-        /* make 'x' shortcut select and then move down */
+        /* make 't' shortcut select and then move down */
         mndrix_kb_select_and_down.delay(10);
 
-        /* TODO make 'ctrl-enter' do the following
-         *  - open message in a new background tab
-         *  - tag the current message in the mailbox view
-         *  - select the next message
-         */
+        /* make 'ctrl-enter' open, tag and select a message */
+        mndrix_kb_open_tag_move.delay(10);
     }
 
     /* Only on the message page */
