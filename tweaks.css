@@ -1,0 +1,4 @@
+/* Only show previews for selected messages */
+body#mailbox tr.preview {
+    display : none;
+}
