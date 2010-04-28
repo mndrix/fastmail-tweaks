@@ -79,6 +79,7 @@ window.addEvent('domready', function () {
     if( $defined($('mailbox')) ) {
 
         /* Refresh the mailbox screen every 5 minutes */
+        /* TODO don't auto-refresh if messages are checked off */
         var minutes = 5;
         var refresh = function () { $$('button.actionRefresh')[0].click() };
         window.setTimeout( refresh, minutes*60*1000 );
@@ -100,5 +101,7 @@ window.addEvent('domready', function () {
     if( $defined($('message')) ) {
         /* make 'e' shortcut for moving messages to Archive */
         mndrix_kb_archive();
+
+        /* TODO change Message-Id header into mid:... link */
     }
 });
