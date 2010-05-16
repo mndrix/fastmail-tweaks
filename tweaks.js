@@ -41,6 +41,7 @@ function mndrix_kb_select_and_down () {
  * and move on to the next one
  */
 function mndrix_kb_open_tag_move () {
+    var is_windows = navigator.userAgent.match('Windows') ? true : false;
     KeyboardShortcuts.Actions.extend({
         'ctrl-enter' : function (e) {
             KeyboardShortcuts.Actions['x'](e);
@@ -56,10 +57,10 @@ function mndrix_kb_open_tag_move () {
                 0,       // screenY
                 0,       // clientX
                 0,       // clientY
-                false,   // ctrlKey
+                is_windows,  // ctrlKey
                 false,   // altKey
                 false,   // shiftKey
-                true,    // metaKey  (different key on Windows?)
+                !is_windows, // metaKey
                 0,       // button
                 null     // relatedTarget
             );
